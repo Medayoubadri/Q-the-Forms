@@ -6,6 +6,7 @@ A dynamic plugin to handle product recommendation questionnaires, manage product
 q-the-forms/
         ├── q-the-forms.php
         ├── includes/
+        │   ├── admin-interface.php
         │   ├── class-question.php
         │   ├── class-answer.php
         │   ├── class-meta-boxes.php
@@ -21,4 +22,5 @@ q-the-forms/
         │   └── q-template.php
         └── languages/
             └── q-the-forms.pot
+
 ```

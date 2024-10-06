@@ -58,5 +58,5 @@ function qtf_add_admin_menu() {
 // Render Admin Page
 function qtf_render_admin_page() {
     // Include the admin interface file
-    include QTF_PLUGIN_DIR . 'includes/admin-interface.php';
+    qtf_render_admin_interface();
 }

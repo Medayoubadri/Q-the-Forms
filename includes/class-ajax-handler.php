@@ -42,12 +42,14 @@ class QTF_Ajax_Handler {
                     wp_die();
                 }
             }
+
             $next_question_id = get_post_meta( $answer->ID, '_qtf_next_question', true );
 
             if ( ! $next_question_id ) {
                 // No next question, end of questionnaire
                 wp_send_json_success( array(
-                    'action' => 'end_questionnaire',
+                    'action'           => 'end_questionnaire',
+                    'answers_selected' => $previous_answers,
                 ) );
                 wp_die();
             }
@@ -61,16 +63,13 @@ class QTF_Ajax_Handler {
 
         // Get question details
         $question_text = $question->post_title;
+
+        // Get answers associated with this question
         $answers = get_posts( array(
             'post_type'      => 'qtf_answer',
             'posts_per_page' => -1,
-            'meta_query'     => array(
-                array(
-                    'key'     => '_qtf_associated_question',
-                    'value'   => $question->ID,
-                    'compare' => '=',
-                ),
-            ),
+            'meta_key'       => '_qtf_associated_question',
+            'meta_value'     => $question->ID,
             'orderby'        => 'title',
             'order'          => 'ASC',
         ) );
@@ -98,9 +97,10 @@ class QTF_Ajax_Handler {
         $html = ob_get_clean();
 
         wp_send_json_success( array(
-            'action'      => 'next_question',
-            'question_id' => $question->ID,
-            'html'        => $html,
+            'action'        => 'next_question',
+            'question_id'   => $question->ID,
+            'html'          => $html,
+            'previous_teps' => count( $previous_answers ) + 1,
         ) );
         wp_die();
     }

@@ -12,11 +12,12 @@ jQuery(document).ready(function($) {
         $.ajax({
             url: qtf_data.ajax_url,
             type: 'POST',
+            dataType: 'json',
             data: {
                 action: 'qtf_get_next_question',
                 nonce: qtf_data.nonce,
                 current_question_id: currentQuestionId,
-                selected_answer_id: answersGiven[currentQuestionId] || 0,
+                selected_answer_id: answersGiven[currentQuestionId],
                 previous_answers: answersGiven
             },
             success: function(response) {
@@ -44,6 +45,7 @@ jQuery(document).ready(function($) {
         $.ajax({
             url: qtf_data.ajax_url,
             type: 'POST',
+            dataType: 'json',
             data: {
                 action: 'qtf_process_questionnaire',
                 nonce: qtf_data.nonce,
@@ -64,24 +66,23 @@ jQuery(document).ready(function($) {
     }
 
     function toggleNavigationButtons() {
-        if (previousQuestions.length > 0) {
+        if (previousQuestions.length > 1) {
             $('#qtf-prev-btn').show();
         } else {
             $('#qtf-prev-btn').hide();
         }
 
-        // Determine if the current question is the last one
-        // For simplicity, assume if there are no more questions, show Submit
-        // Otherwise, show Next
-        // This logic might need to be adjusted based on your questionnaire flow
-        $('#qtf-next-btn').show();
-        $('#qtf-submit-btn').hide();
+        if (currentQuestionId === 0 || $('#qtf-questionnaire-content').find('.step').length === 0 ){
+            $('#qtf-next-btn').hide();
+            $('#qtf-submit-btn').show();
+        } else {
+            $('#qtf-next-btn').show();
+            $('#qtf-submit-btn').hide();
+        }
     }
 
     // Initial load
     loadQuestion(currentQuestionId);
-    updateStepIndicator();
-    toggleNavigationButtons();
 
     // Handle Next Button
     $('#qtf-next-btn').on('click', function() {
@@ -92,32 +93,47 @@ jQuery(document).ready(function($) {
         }
 
         answersGiven[currentQuestionId] = selectedAnswer;
-
-        // Push the current question ID to previousQuestions before loading the next one
-        previousQuestions.push(currentQuestionId);
-
         loadQuestion(currentQuestionId);
     });
 
     // Handle Previous Button
     $('#qtf-prev-btn').on('click', function() {
-        if (previousQuestions.length === 0) return; // No previous question to go back to
+        if (previousQuestions.length < 2) return;
 
-        // Remove the last question ID from previousQuestions
-        let lastQuestionId = previousQuestions.pop();
+        // Remove the current question
+        previousQuestions.pop();
+        let prevQuestionId = previousQuestions[previousQuestions.length - 1];
 
-        // Set currentQuestionId to the previous question
-        if (previousQuestions.length > 0) {
-            currentQuestionId = previousQuestions[previousQuestions.length - 1];
-        } else {
-            currentQuestionId = 0; // Reset to first question if no previous questions
-        }
+        currentQuestionId = prevQuestionId;
 
         // Remove the answer for the current question
-        delete answersGiven[lastQuestionId];
+        delete answersGiven[currentQuestionId];
 
         // Load the previous question
-        loadQuestion(currentQuestionId);
+        $.ajax({
+            url: qtf_data.ajax_url,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action: 'qtf_get_next_question',
+                nonce: qtf_data.nonce,
+                current_question_id: currentQuestionId,
+                selected_answer_id: answersGiven[currentQuestionId],
+                previous_answers: answersGiven
+            },
+            success: function(response) {
+                if (response.success) {
+                    $('#qtf-questionnaire-content').html(response.data.html);
+                    updateStepIndicator();
+                    toggleNavigationButtons();
+                } else {
+                    alert(response.data);
+                }
+            },
+            error: function() {
+                alert('An error occurred while loading the question.');
+            }
+        });
     });
 
     // Handle Form Submission
@@ -130,8 +146,7 @@ jQuery(document).ready(function($) {
         }
 
         answersGiven[currentQuestionId] = selectedAnswer;
-        previousQuestions.push(currentQuestionId);
-        loadQuestion(currentQuestionId);
+        submitQuestionnaire();
     });
 
     // Handle Retake Questionnaire
@@ -144,7 +159,6 @@ jQuery(document).ready(function($) {
         answersGiven = {};
         currentQuestionId = 0;
         updateStepIndicator();
-        toggleNavigationButtons();
         loadQuestion(currentQuestionId);
     });
 });
