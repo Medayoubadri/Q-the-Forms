@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Q the Forms
- * Description: A dynamic plugin to handle product recommendation questionnaires, manage product tags and slugs, and allow easy management of questionnaire steps and questions.
- * Version: 1.1.5 (Beta)
+ * Description: A plugin to dynamically manage product recommendation forms.
+ * Version: 1.2.0
  * Author: MedAyouBadri
  * Text Domain: q-the-forms
  * Domain Path: /languages
@@ -36,5 +36,27 @@ function qtf_init() {
     QTF_Ajax_Handler::init();
     QTF_Shortcode::init();
     QTF_Enqueue::init();
+
+    // Add Admin Menu
+    add_action( 'admin_menu', 'qtf_add_admin_menu' );
 }
 add_action( 'plugins_loaded', 'qtf_init' );
+
+// Add Admin Menu
+function qtf_add_admin_menu() {
+    add_menu_page(
+        'Q the Forms',                 // Page title
+        'Q the Forms',                 // Menu title
+        'manage_options',              // Capability
+        'qtf_manage_questionnaire',    // Menu slug
+        'qtf_render_admin_page',       // Callback function
+        'dashicons-feedback',          // Icon
+        6                              // Position
+    );
+}
+
+// Render Admin Page
+function qtf_render_admin_page() {
+    // Include the admin interface file
+    include QTF_PLUGIN_DIR . 'includes/admin-interface.php';
+}
