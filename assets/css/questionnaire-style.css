@@ -1,0 +1,181 @@
+.questionnaire-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.questionnaire-title {
+    font-size: 24px;
+    color: #333333;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.step-title {
+    font-size: 20px;
+    color: #4a4a4a;
+    margin-bottom: 1rem;
+}
+
+.question h3 {
+    font-size: 18px;
+    color: #333333;
+    margin-bottom: 1rem;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.option input[type="radio"] {
+    margin-right: 0.5rem;
+}
+
+.option-text {
+    font-size: 16px;
+    color: #4a4a4a;
+}
+
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #00a86b;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #008c59;
+}
+
+.btn-secondary {
+    background-color: #f0f0f0;
+    color: #333333;
+}
+
+.btn-secondary:hover {
+    background-color: #e0e0e0;
+}
+
+.step-indicator {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 14px;
+    color: #666666;
+}
+
+.results-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.results-title {
+    font-size: 24px;
+    color: #333333;
+    margin-bottom: 1.5rem;
+}
+
+.results-summary {
+    margin-bottom: 2rem;
+}
+
+.results-summary h3 {
+    font-size: 18px;
+    color: #4a4a4a;
+    margin-bottom: 0.5rem;
+}
+
+.results-summary ul {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.product-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.product-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    max-width: 150px;
+    margin-bottom: 1rem;
+}
+
+.product-name {
+    font-size: 18px;
+    color: #333333;
+    margin-bottom: 0.5rem;
+}
+
+.product-description {
+    font-size: 14px;
+    color: #666666;
+    margin-bottom: 1rem;
+}
+
+.product-link {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #00a86b;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.product-link:hover {
+    background-color: #008c59;
+}
+
+.retake-button {
+    display: block;
+    width: fit-content;
+    margin: 2rem auto 0;
+    padding: 0.5rem 1rem;
+    background-color: #f0f0f0;
+    color: #333333;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.retake-button:hover {
+    background-color: #e0e0e0;
+}
